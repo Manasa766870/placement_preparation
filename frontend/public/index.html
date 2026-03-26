@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Placement Prep Login</title>
+
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    /* Background Image */
+    body {
+      height: 100vh;
+      background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* Dark Overlay */
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      top: 0;
+      left: 0;
+    }
+
+    /* Login Card */
+    .login-box {
+      position: relative;
+      background: white;
+      padding: 30px;
+      width: 350px;
+      border-radius: 10px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      text-align: center;
+      z-index: 1;
+    }
+
+    /* Logo */
+    .logo {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2a5298;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-size: 12px;
+      color: gray;
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(to right, #1e3c72, #2a5298);
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.9;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2a5298;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-box">
+
+  <!-- Logo -->
+  <div class="logo">PlacementPrep</div>
+  <div class="tagline">Prepare Smart. Get Placed.</div>
+
+  <!-- Inputs -->
+  <input type="email" id="email" placeholder="Enter email">
+  <input type="password" id="password" placeholder="Enter password">
+
+  <button onclick="login()">Login</button>
+
+  <p style="margin-top:10px;">
+    <a href="register.html">Create Account</a>
+  </p>
+
+</div>
+
+<script>
+function login() {
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if(user && email === user.email && password === user.password){
+    if(user.role === "admin"){
+      window.location.href = "../admin dashboard/admin_dashboard.html";
+    } else {
+      window.location.href = "../student dashboard/student_dashboard.html";
+    }
+  } else {
+    alert("Invalid credentials");
+  }
+}
+</script>
+
+</body>
+</html>

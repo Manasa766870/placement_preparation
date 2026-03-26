@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Register - Placement Prep</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial;
+    }
+
+    body {
+      height: 100vh;
+      background: url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    body::before {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.6);
+      top: 0;
+      left: 0;
+    }
+
+    .register-box {
+      position: relative;
+      background: white;
+      padding: 30px;
+      width: 350px;
+      border-radius: 10px;
+      text-align: center;
+      z-index: 1;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2a5298;
+      margin-bottom: 15px;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #2a5298;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2a5298;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="register-box">
+
+  <div class="logo">PlacementPrep</div>
+
+  <h3>Create Account</h3>
+
+  <input type="text" id="name" placeholder="Full Name">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
+
+  <!-- Role selection -->
+  <select id="role">
+    <option value="student">Student</option>
+    <option value="admin">Admin</option>
+  </select>
+
+  <button onclick="register()">Register</button>
+
+  <p style="margin-top:10px;">
+    <a href="index.html">Back to Login</a>
+  </p>
+
+</div>
+
+<script>
+function register() {
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+  const role = document.getElementById("role").value;
+
+  if(!name  !email  !password){
+    alert("Please fill all fields");
+    return;
+  }
+
+  // Save in localStorage
+  const user = { name, email, password, role };
+  localStorage.setItem("user", JSON.stringify(user));
+
+  alert("Registered successfully!");
+
+  // Redirect to login
+  window.location.href = "../public/index.html";
+}
+</script>
+
+</body>
+</html>
