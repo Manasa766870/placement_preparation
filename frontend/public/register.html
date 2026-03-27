@@ -99,27 +99,36 @@
 </div>
 
 <script>
-function register() {
+async function register() {
   const name = document.getElementById("name").value;
   const email = document.getElementById("email").value;
   const password = document.getElementById("password").value;
   const role = document.getElementById("role").value;
 
-  if(!name  !email  !password){
+  if (!name || !email || !password) {
     alert("Please fill all fields");
     return;
   }
 
-  // Save in localStorage
-  const user = { name, email, password, role };
-  localStorage.setItem("user", JSON.stringify(user));
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ name, email, password, role })
+    });
 
-  alert("Registered successfully!");
+    const data = await res.json();
 
-  // Redirect to login
-  window.location.href = "../public/index.html";
+    alert(data.message);
+    window.location.href = "index.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Error registering");
+  }
 }
 </script>
-
 </body>
 </html>

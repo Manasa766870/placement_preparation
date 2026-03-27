@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Placement Prep Platform</title>
+
+  <link rel="stylesheet" href="student_dashboard.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    #resourcesSection {
+      padding: 20px;
+      margin-top: 30px;
+      border-top: 1px solid #ccc;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <h2 class="logo">PlacementPrep</h2>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Home</a></li>
+    <li><a href="#">Practice</a></li>
+    <li><a href="#">Mock Tests</a></li>
+    <li><a href="#">Interview Prep</a></li>
+    <li><a href="#">Career Guidance</a></li>
+    <li><button onclick="toggleMode()" class="mode-btn">🌙</button></li>
+    <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+  </ul>
+</nav>
+
+<!-- Hero -->
+<section class="hero">
+  <h1>Prepare Smart. Perform Better. Get Placed.</h1>
+  <p>A complete placement preparation platform.</p>
+
+  <div class="buttons">
+    <button class="btn green">Start Practicing</button>
+    <button class="btn light">Take a Mock Test</button>
+  </div>
+
+  <p class="welcome">Welcome, <span id="username">User</span> 👋</p>
+</section>
+
+<!-- Features -->
+<section class="features">
+  <div class="feature">
+    <i class="bi bi-bar-chart"></i>
+    <p>Performance Analysis</p>
+  </div>
+
+  <div class="feature">
+    <i class="bi bi-clock"></i>
+    <p>Real Exam Environment</p>
+  </div>
+
+  <div class="feature">
+    <i class="bi bi-journal-text"></i>
+    <p>Structured Practice</p>
+  </div>
+
+  <!-- ✅ Removed onclick -->
+  <div class="feature">
+    <i class="bi bi-camera-video"></i>
+    <p>Video Explanations</p>
+  </div>
+
+  <div class="feature">
+    <i class="bi bi-file-earmark-text"></i>
+    <p>One-Page Revision</p>
+  </div>
+</section>
+
+<!-- Resources -->
+<section id="resourcesSection">
+  <h2>Resources</h2>
+  <div id="resourceContainer">Loading...</div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>© 2026 Placement Prep Platform</p>
+</footer>
+
+<!-- JS -->
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Username
+  const user = localStorage.getItem("user");
+  if (user) {
+    document.getElementById("username").innerText = user;
+  }
+
+  // Logout
+  window.logout = function () {
+    localStorage.clear();
+    window.location.href = "../public/index.html";
+  };
+
+  // Dark mode
+  window.toggleMode = function () {
+    document.body.classList.toggle("dark");
+
+    const btn = document.querySelector(".mode-btn");
+    if (document.body.classList.contains("dark")) {
+      btn.innerText = "☀️";
+      localStorage.setItem("mode", "dark");
+    } else {
+      btn.innerText = "🌙";
+      localStorage.setItem("mode", "light");
+    }
+  };
+
+  // Load saved mode
+  const savedMode = localStorage.getItem("mode");
+  if (savedMode === "dark") {
+    document.body.classList.add("dark");
+    document.querySelector(".mode-btn").innerText = "☀️";
+  }
+
+  // Load resources
+  async function loadResources() {
+    try {
+      const res = await fetch("http://localhost:5000/api/user/resources");
+      const data = await res.json();
+
+      const container = document.getElementById("resourceContainer");
+      container.innerHTML = "";
+
+      if (!Array.isArray(data) || data.length === 0) {
+        container.innerHTML = "<p>No resources available</p>";
+        return;
+      }
+
+      data.forEach(item => {
+        if (item.type === "video") {
+          container.innerHTML += `
+            <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
+              <h4>${item.title}</h4>
+              <p><b>Topic:</b> ${item.topic}</p>
+              <video width="300" controls>
+                <source src="http://localhost:5000${item.file_path}">
+              </video>
+            </div>
+          `;
+        } else {
+          container.innerHTML += `
+            <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
+              <h4>${item.title}</h4>
+              <p><b>Topic:</b> ${item.topic}</p>
+              <a href="http://localhost:5000${item.file_path}" target="_blank">
+                📄 View PDF
+              </a>
+            </div>
+          `;
+        }
+      });
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("resourceContainer").innerHTML = "Error loading resources";
+    }
+  }
+
+  loadResources();
+
+});
+</script>
+
+</body>
+</html>
