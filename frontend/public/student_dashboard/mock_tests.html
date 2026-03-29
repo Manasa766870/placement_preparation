@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Mock Tests</title>
+
+  <style>
+/* Background */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #4cfced, #2efdf3);
+  min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(13, 42, 92, 0.9);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 15px 30px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.nav-links a:hover {
+  color: #9fc3c5;
+}
+
+.logout-btn, .mode-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.logout-btn {
+  background: #dc3545;
+  color: white;
+}
+
+.logout-btn:hover {
+  background: #b02a37;
+}
+
+.mode-btn {
+  background: #ffc107;
+}
+
+.mode-btn:hover {
+  background: #e0a800;
+}
+
+/* Content */
+.container {
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  text-align: center;
+  color: rgb(24, 22, 22);
+  margin-bottom: 30px;
+}
+
+/* Cards */
+.card {
+  background: linear-gradient(135deg, #f7faf6, #f6f5f7);
+  backdrop-filter: blur(12px);
+  border-radius: 15px;
+  padding: 25px;
+  margin-bottom: 20px;
+  color: rgb(3, 3, 3);
+  box-shadow: 0 8px 20px rgba(22, 13, 13, 0.2);
+  transition: 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px) scale(1.02);
+}
+
+.card h3 {
+  margin-bottom: 10px;
+}
+
+.card p {
+  color: #0f0f0f;
+} 
+
+/* Button */
+.btn {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 10px 18px;
+  background: linear-gradient(45deg,  #198754, #198754);
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.btn:hover {
+  background: linear-gradient(45deg, #218838, #1aa179);
+}
+
+/* Dark Mode */
+body.dark {
+  background: linear-gradient(135deg, #1e1e2f, #121212);
+}
+
+body.dark .card {
+  background: rgba(30, 30, 30, 0.7);
+}
+
+body.dark h2 {
+  color: #ddd;
+}
+.test-btn {
+  margin-left: 10px;
+  background: linear-gradient(45deg, #007bff, #00c6ff);
+}
+
+.test-btn:hover {
+  background: linear-gradient(45deg, #0056b3, #0099cc);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <h2 style="color:white">PlacementPrep</h2>
+
+  <ul class="nav-links">
+    <li><a href="student_dashboard.html">Home</a></li>
+    <li><a href="practice.html">Practice</a></li>
+    <li><a href="mock_tests.html">Mock Tests</a></li>
+    <li><a href="interview.html">Interview Prep</a></li>
+    <li><a href="career.html">Career Guidance</a></li>
+
+    <li><button onclick="toggleMode()" class="mode-btn">🌙</button></li>
+    <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+  </ul>
+</nav>
+
+<!-- Content -->
+<div class="container">
+  <h2>Mock Tests</h2>
+
+  <!-- Aptitude -->
+  <div class="card">
+    <h3>Aptitude Mock Tests</h3>
+    <p>Practice quantitative aptitude and logical reasoning.</p>
+    <a href="https://www.indiabix.com/online-test/aptitude-test/" target="_blank" class="btn">
+      External Test
+    </a>
+    <button class="btn test-btn" onclick="startTest('Aptitude')">
+    Take Test (Our Platform)
+  </button>
+  </div>
+
+  <!-- DSA -->
+  <div class="card">
+    <h3>DSA Mock Tests</h3>
+    <p>Practice coding and data structures.</p>
+    <a href="https://www.geeksforgeeks.org/practice/" target="_blank" class="btn">
+      External Test
+    </a>
+    <button class="btn test-btn" onclick="startTest('DSA')">
+    Take Test (Our Platform)
+  </button>
+  </div>
+
+  <!-- Company Based -->
+  <div class="card">
+    <h3>Company Based Tests</h3>
+    <p>Prepare for TCS, Infosys, Wipro, etc.</p>
+    <a href="https://prepinsta.com/placement-papers/" target="_blank" class="btn">
+      Start Test
+    </a>
+  </div>
+
+</div>
+
+<!-- JS -->
+<script>
+
+function logout(){
+  localStorage.clear();
+  window.location.href = "..  /index.html";
+}
+
+function toggleMode(){
+  document.body.classList.toggle("dark");
+
+  const btn = document.querySelector(".mode-btn");
+  if(document.body.classList.contains("dark")){
+    btn.innerText = "☀️";
+    localStorage.setItem("mode","dark");
+  } else {
+    btn.innerText = "🌙";
+    localStorage.setItem("mode","light");
+  }
+}
+
+if(localStorage.getItem("mode") === "dark"){
+  document.body.classList.add("dark");
+}
+
+function startTest(topic) {
+  console.log("Clicked:", topic); // 👈 debug
+
+  localStorage.setItem("testTopic", topic);
+  window.location.href = "mock_test_system.html";
+}
+</script>
+
+</body>
+</html>

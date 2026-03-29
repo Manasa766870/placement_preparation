@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Interview Preparation</title>
+
+<style>
+
+/* Background (soft aesthetic) */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #9cffef; /* soft beige */
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #2f3e46; /* muted dark */
+  color: #f8f7f4;
+  padding: 15px 25px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 18px;
+}
+
+.nav-links a {
+  color: #f8f7f4;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.nav-links a:hover {
+  color: #84a98c; /* soft green */
+}
+
+/* Buttons */
+.logout-btn, .mode-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.logout-btn {
+  background: #bc4749;
+  color: white;
+}
+
+.mode-btn {
+  background: #cad2c5;
+}
+
+/* Content */
+.container {
+  padding: 40px;
+  max-width: 900px;
+  margin: auto;
+}
+
+h2 {
+  text-align: center;
+  color: #344e41;
+  margin-bottom: 30px;
+}
+
+/* Cards */
+.card {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 22px;
+  margin-bottom: 20px;
+  border: 1px solid #e0e0e0;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
+
+.card h3 {
+  color: #344e41;
+}
+
+.card p {
+  color: #555;
+}
+
+/* Links */
+.links a {
+  display: inline-block;
+  margin: 6px 6px 0 0;
+  padding: 8px 14px;
+  background: #198754;
+  color: white;
+  text-decoration: none;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+.links a:hover {
+  background: #2b3ca0;
+}
+
+/* Tips list */
+ul {
+  padding-left: 20px;
+  color: #555;
+}
+
+/* Dark Mode */
+body.dark {
+  background: #1b1b1b;
+  color: #eee;
+}
+
+body.dark .navbar {
+  background: #111;
+}
+
+body.dark .card {
+  background: #2a2a2a;
+  border: 1px solid #444;
+}
+
+body.dark h2 {
+  color: #ddd;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <h2 style="color:white">PlacementPrep</h2>
+
+  <ul class="nav-links">
+    <li><a href="student_dashboard.html">Home</a></li>
+    <li><a href="practice.html">Practice</a></li>
+    <li><a href="mock_tests.html">Mock Tests</a></li>
+    <li><a href="interview.html">Interview Prep</a></li>
+    <li><a href="career.html">Career Guidance</a></li>
+
+    <li><button onclick="toggleMode()" class="mode-btn">🌙</button></li>
+    <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+  </ul>
+</nav>
+
+<!-- Content -->
+<div class="container">
+  <h2>Interview Preparation</h2>
+
+  <!-- HR Round -->
+  <div class="card">
+    <h3>🧑‍💼 HR Interview Questions</h3>
+    <p>Prepare common HR questions like "Tell me about yourself", strengths, weaknesses.</p>
+    <div class="links">
+      <a href="https://www.geeksforgeeks.org/hr-interview-questions/" target="_blank">GFG HR</a>
+      <a href="https://www.indiabix.com/hr-interview/questions-and-answers/" target="_blank">IndiaBix HR</a>
+    </div>
+  </div>
+
+  <!-- Technical -->
+  <div class="card">
+    <h3>💻 Technical Interview</h3>
+    <p>Core subjects like DBMS, OS, CN, OOPS.</p>
+    <div class="links">
+      <a href="https://www.geeksforgeeks.org/dbms-interview-questions/" target="_blank">DBMS</a>
+      <a href="https://www.geeksforgeeks.org/operating-system-interview-questions/" target="_blank">OS</a>
+      <a href="https://www.geeksforgeeks.org/computer-network-interview-questions/" target="_blank">CN</a>
+    </div>
+  </div>
+
+  <!-- Coding -->
+  <div class="card">
+    <h3>👨‍💻 Coding Interviews</h3>
+    <p>Practice coding problems asked in interviews.</p>
+    <div class="links">
+      <a href="https://leetcode.com/problemset/" target="_blank">LeetCode</a>
+      <a href="https://www.hackerrank.com/domains/tutorials/10-days-of-javascript" target="_blank">HackerRank</a>
+    </div>
+  </div>
+
+  <!-- Tips -->
+  <div class="card">
+    <h3>🎯 Interview Tips</h3>
+    <p>Important tips to crack interviews successfully.</p>
+    <ul>
+      <li>Be confident and clear</li>
+      <li>Revise basics (DSA + CS Core)</li>
+      <li>Practice mock interviews</li>
+      <li>Prepare projects explanation</li>
+    </ul>
+  </div>
+
+</div>
+
+<!-- JS -->
+<script>
+function logout(){
+  localStorage.clear();
+  window.location.href = "../public/index.html";
+}
+
+function toggleMode(){
+  document.body.classList.toggle("dark");
+
+  const btn = document.querySelector(".mode-btn");
+  if(document.body.classList.contains("dark")){
+    btn.innerText = "☀️";
+    localStorage.setItem("mode","dark");
+  } else {
+    btn.innerText = "🌙";
+    localStorage.setItem("mode","light");
+  }
+}
+
+if(localStorage.getItem("mode") === "dark"){
+  document.body.classList.add("dark");
+}
+</script>
+
+</body>
+</html>

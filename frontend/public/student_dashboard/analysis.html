@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Performance Analysis</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #00c9ff, #92fe9d);
+}
+
+/* Navbar */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  background: #0d2a5c;
+  color: white;
+  padding: 15px 25px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 15px;
+  list-style: none;
+}
+
+.nav-links a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Container */
+.container {
+  padding: 30px;
+}
+
+/* Cards */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.card h3 {
+  margin: 10px 0;
+}
+
+/* Chart */
+.chart-box {
+  background: white;
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 12px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <h2>PlacementPrep</h2>
+  <ul class="nav-links">
+    <li><a href="student_dashboard.html">Home</a></li>
+    <li><a href="practice.html">Practice</a></li>
+    <li><a href="mock_tests.html">Mock Tests</a></li>
+    <li><a href="interview.html">Interview</a></li>
+    <li><a href="career.html">Career</a></li>
+  </ul>
+</nav>
+
+<div class="container">
+
+  <h2>📊 Performance Analysis</h2>
+
+  <!-- Stats -->
+  <div class="stats">
+    <div class="card">
+      <h4>Tests Taken</h4>
+      <h3 id="tests">5</h3>
+    </div>
+
+    <div class="card">
+      <h4>Average Score</h4>
+      <h3 id="avg">78%</h3>
+    </div>
+
+    <div class="card">
+      <h4>Highest Score</h4>
+      <h3 id="high">90%</h3>
+    </div>
+
+    <div class="card">
+      <h4>Progress</h4>
+      <h3 id="progress">Good</h3>
+    </div>
+  </div>
+
+  <!-- Chart -->
+  <div class="chart-box">
+    <canvas id="myChart"></canvas>
+  </div>
+
+</div>
+
+<script>
+async function loadAnalysis() {
+  const user = localStorage.getItem("user");
+
+  console.log("User:", user);
+
+  if (!user) {
+    alert("User not found. Please login again.");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/user/results/${user}`);
+    const data = await res.json();
+
+    console.log("Analysis Data:", data);
+
+    if (!data.length) {
+      document.getElementById("tests").innerText = 0;
+      document.getElementById("avg").innerText = "0%";
+      document.getElementById("high").innerText = "0%";
+      document.getElementById("progress").innerText = "No Data";
+      return;
+    }
+
+    const scores = data.map(d => (d.score / d.total) * 100);
+    const avg = scores.reduce((a, b) => a + b, 0) / scores.length;
+
+    document.getElementById("tests").innerText = data.length;
+    document.getElementById("avg").innerText = avg.toFixed(1) + "%";
+    document.getElementById("high").innerText = Math.max(...scores).toFixed(1) + "%";
+
+    new Chart(document.getElementById("myChart"), {
+      type: "line",
+      data: {
+        labels: data.map((_, i) => `Test ${i + 1}`),
+        datasets: [{
+          label: "Performance %",
+          data: scores
+        }]
+      }
+    });
+
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+// ✅ CALL FUNCTION
+loadAnalysis();
+</script>
+</body>
+</html>

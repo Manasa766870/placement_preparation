@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>pdf</title>
+        <!-- <link rel="stylesheet" href="interview.css"> -->
+    </head>
+    <style>
+body {
+  background-color: #f5f7fb;
+  font-family: 'Segoe UI', sans-serif;
+  margin: 0;
+}
+
+/* Title */
+h2 {
+  margin: 0;
+  background: #1e293b;
+  color: white;
+  padding: 15px 20px;
+}
+
+/* Container grid */
+#pdfContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+/* PDF card */
+.pdf-card {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.pdf-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Title */
+.pdf-card h4 {
+  margin-bottom: 5px;
+  font-weight: 600;
+}
+
+/* Topic */
+.pdf-card p {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+/* PDF link button */
+.pdf-link {
+  display: inline-block;
+  padding: 8px 12px;
+  background: #dc3545;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-size: 14px;
+  transition: 0.3s;
+}
+
+.pdf-link:hover {
+  background: #bb2d3b;
+}
+</style>
+    <body>
+        <h2 style="padding:20px;">PDF Resources</h2>
+        <div id="pdfContainer" style="padding:20px;"></div>
+    </body>
+    <script>
+async function loadPDFs() {
+  const res = await fetch("http://localhost:5000/api/user/resources");
+  const data = await res.json();
+
+  const container = document.getElementById("pdfContainer");
+  container.innerHTML = "";
+
+  data.forEach(item => {
+    if(item.type === "pdf"){
+      container.innerHTML += `
+        <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
+          <h4>${item.title}</h4>
+          <p><b>Topic:</b> ${item.topic}</p>
+          <a href="http://localhost:5000${item.file_path}" target="_blank">
+            📄 View PDF
+          </a>
+        </div>
+      `;
+    }
+  });
+}
+loadPDFs();
+</script>
+</html>

@@ -13,28 +13,82 @@
 <style>
 body {
   overflow-x: hidden;
+  background-color: #6ffdfd;
+  font-family: 'Segoe UI', sans-serif;
 }
 
+/* Sidebar */
 .sidebar {
   width: 220px;
   height: 100vh;
   position: fixed;
+  background: #1e293b;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
 }
 
+.sidebar h4 {
+  font-weight: 600;
+}
+
+.sidebar .nav-link {
+  color: #cbd5e1;
+  padding: 10px 15px;
+  margin: 5px 0;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+/* Hover effect */
+.sidebar .nav-link:hover {
+  background: #334155;
+  color: #fff;
+}
+
+/* Active click effect */
+.sidebar .nav-link:active {
+  background: #0d6efd;
+  color: white;
+}
+
+/* Content */
 .content {
   margin-left: 220px;
-}
-
-.card-box {
-  border-radius: 10px;
-  color: white;
   padding: 20px;
 }
 
-.bg-blue { background: #0d6efd; }
-.bg-green { background: #198754; }
-.bg-orange { background: #fd7e14; }
-.bg-red { background: #dc3545; }
+/* Cards */
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+/* Card titles */
+.card h5 {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+/* Inputs */
+.form-control {
+  border-radius: 8px;
+}
+
+/* Buttons */
+.btn {
+  border-radius: 8px;
+  font-weight: 500;
+}
+
+/* Section spacing */
+.mt-5 {
+  margin-top: 30px !important;
+}
+
+/* Status text */
+#status, #questionStatus {
+  font-size: 14px;
+}
 </style>
 
 </head>
@@ -45,86 +99,26 @@ body {
   <h4 class="text-center">Admin</h4>
   <hr>
 
-  <ul class="nav flex-column">
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-people"></i> Students</a></li>
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-file-text"></i> Tests</a></li>
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-bar-chart"></i> Results</a></li>
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-building"></i> Companies</a></li>
-    <li class="nav-item"><a class="nav-link text-white" href="#"><i class="bi bi-box-arrow-right"></i> Logout</a></li>
-  </ul>
+  <!-- Sidebar (ONLY CHANGE: add onclick) -->
+<ul class="nav flex-column">
+  <li class="nav-item">
+  <a class="nav-link text-white" href="#" onclick="showSection('dashboard')">Dashboard</a>
+</li>
+
+
+
+<li class="nav-item">
+  <a class="nav-link text-white" href="#" onclick="logout()">Logout</a>
+</li>
+</ul>
 </div>
 
 <div class="content p-4">
-
+  <div id="dashboardSection">
+    <h1 style="text-align:center;color:rgb(250, 248, 248);background:rgb(15, 15, 77)">Placementprep</h1>
   <h2>Dashboard</h2>
 
-  <div class="row mt-4">
-    <div class="col-md-3">
-      <div class="card-box bg-blue">
-        <h5>Total Students</h5>
-        <h3 id="students">0</h3>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-box bg-green">
-        <h5>Total Tests</h5>
-        <h3 id="tests">0</h3>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-box bg-orange">
-        <h5>Average Score</h5>
-        <h3 id="avgScore">0%</h3>
-      </div>
-    </div>
-
-    <div class="col-md-3">
-      <div class="card-box bg-red">
-        <h5>Companies</h5>
-        <h3 id="companies">0</h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="card mt-5 p-3">
-    <h5>Student Performance</h5>
-    <canvas id="myChart"></canvas>
-  </div>
-
-
-  <div class="card mt-5 p-3">
-    <h5>Recent Students</h5>
-    <table class="table table-striped">
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Score</th>
-        </tr>
-      </thead>
-      <tbody id="studentTable"></tbody>
-    </table>
-  </div>
-  <!-- <div class="card mt-5 p-3">
-  <h5>Upload Video</h5>
-  <form id="videoUploadForm" enctype="multipart/form-data">
-    <div class="mb-3">
-      <label for="videoTitle" class="form-label">Video Title</label>
-      <input type="text" class="form-control" id="videoTitle" name="title" required>
-    </div>
-    <div class="mb-3">
-      <label for="videoFile" class="form-label">Select Video</label>
-      <input type="file" class="form-control" id="videoFile" name="video" accept="video/*" required>
-    </div>
-    <button type="submit" class="btn btn-primary">Upload</button>
-  </form>
-  <div id="uploadStatus" class="mt-2"></div>
-</div> -->
-
-
+    
 <div class="card mt-5 p-3">
   <h5>Upload Video</h5>
   <form id="videoUploadForm" enctype="multipart/form-data">
@@ -147,7 +141,30 @@ body {
 </div>
 <div id="status" style="margin-top:15px; font-weight:bold;"></div>
 </div>
+<div class="card mt-5 p-3">
+  <h5>Add Question</h5>
 
+  <form id="questionForm">
+    <input type="text" name="question" placeholder="Enter Question" class="form-control mb-2" required>
+
+    <input type="text" name="option1" placeholder="Option 1" class="form-control mb-2" required>
+    <input type="text" name="option2" placeholder="Option 2" class="form-control mb-2" required>
+    <input type="text" name="option3" placeholder="Option 3" class="form-control mb-2" required>
+    <input type="text" name="option4" placeholder="Option 4" class="form-control mb-2" required>
+
+    <input type="number" name="correct_option" placeholder="Correct Option (1-4)" class="form-control mb-2" required>
+
+    <select name="topic" class="form-control mb-2" required>
+      <option value="">Select Topic</option>
+      <option value="Aptitude">Aptitude</option>
+      <option value="DSA">DSA</option>
+    </select>
+
+    <button class="btn btn-success">Add Question</button>
+  </form>
+
+  <div id="questionStatus" class="mt-2"></div>
+</div>
 <script src="admin.js"></script>
 </body>
 </html>

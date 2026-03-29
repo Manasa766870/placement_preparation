@@ -129,6 +129,9 @@ async function login() {
     if (res.ok) {
       alert(data.message);
 
+      // ✅ STORE USER EMAIL (VERY IMPORTANT)
+      localStorage.setItem("user", email);
+
       // role-based redirect
       if (data.role === "admin") {
         window.location.href = "admin_dashboard/admin_dashboard.html";
@@ -146,6 +149,5 @@ async function login() {
   }
 }
 </script>
-
 </body>
 </html>
