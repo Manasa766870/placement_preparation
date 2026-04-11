@@ -9,7 +9,7 @@
 body {
   margin: 0;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(135deg, #4cfced, #2efdf3);
+  background: linear-gradient(135deg, #0b1d51 0%, #1a3a6e 100%);
   min-height: 100vh;
 }
 
@@ -40,7 +40,7 @@ body {
 .nav-links a {
   color: white;
   text-decoration: none;
-  font-size: 15px;
+  font-size: 20px;
   transition: 0.3s;
 }
 
@@ -153,7 +153,7 @@ body.dark h2 {
 
 <!-- Navbar -->
 <nav class="navbar">
-  <h2 style="color:white">PlacementPrep</h2>
+  <h2 style="color:white;font-size:24px;">📚PlacementPrep</h2>
 
   <ul class="nav-links">
     <li><a href="student_dashboard.html">Home</a></li>
@@ -169,15 +169,12 @@ body.dark h2 {
 
 <!-- Content -->
 <div class="container">
-  <h2>Mock Tests</h2>
+  <h2 style="font-size:50px;color:white;">Mock Tests</h2>
 
   <!-- Aptitude -->
   <div class="card">
     <h3>Aptitude Mock Tests</h3>
     <p>Practice quantitative aptitude and logical reasoning.</p>
-    <a href="https://www.indiabix.com/online-test/aptitude-test/" target="_blank" class="btn">
-      External Test
-    </a>
     <button class="btn test-btn" onclick="startTest('Aptitude')">
     Take Test (Our Platform)
   </button>
@@ -187,9 +184,7 @@ body.dark h2 {
   <div class="card">
     <h3>DSA Mock Tests</h3>
     <p>Practice coding and data structures.</p>
-    <a href="https://www.geeksforgeeks.org/practice/" target="_blank" class="btn">
-      External Test
-    </a>
+    
     <button class="btn test-btn" onclick="startTest('DSA')">
     Take Test (Our Platform)
   </button>
@@ -199,9 +194,6 @@ body.dark h2 {
   <div class="card">
     <h3>Company Based Tests</h3>
     <p>Prepare for TCS, Infosys, Wipro, etc.</p>
-    <a href="https://prepinsta.com/placement-papers/" target="_blank" class="btn">
-      Start Test
-    </a>
   </div>
 
 </div>

@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Student Login</title>
+
+  <!-- Font Awesome for eye icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
+                  url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") 
+                  no-repeat center center/cover;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-card {
+      background: white;
+      padding: 40px 35px;
+      border-radius: 20px;
+      width: 380px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+    }
+
+    .login-card h2 {
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 15px; /* space for eye icon */
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #667eea;
+    }
+
+    /* Eye Icon */
+    .eye-icon {
+      position: absolute;
+      right: 12px;
+      top: 38px;
+      cursor: pointer;
+      color: #888;
+      font-size: 16px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .register-link {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .register-link a {
+      color: #667eea;
+      text-decoration: none;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .message.error {
+      background: #fee;
+      color: #c33;
+      display: block;
+    }
+
+    .message.success {
+      background: #e6ffed;
+      color: #2e7d32;
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="login-card">
+  <h2>Student Login</h2>
+  
+  <div class="input-group">
+    <label>Email Address</label>
+    <input type="email" id="email" placeholder="student@example.com">
+  </div>
+
+  <div class="input-group">
+    <label>Password</label>
+    
+    <input type="password" id="password" placeholder="Enter your password">
+    
+    <i class="fa-solid fa-eye eye-icon" onclick="togglePassword()" id="eyeIcon"></i>
+  </div>
+
+  <button onclick="studentLogin()">Login →</button>
+
+  <div class="register-link">
+    Don't have an account? <a href="register.html">Register here</a>
+  </div>
+
+  <div id="messageBox" class="message"></div>
+</div>
+
+<script>
+async function studentLogin() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const messageBox = document.getElementById("messageBox");
+  const btn = document.querySelector("button");
+
+  messageBox.className = "message";
+  messageBox.style.display = "none";
+
+  if (!email || !password) {
+    showMessage("Please enter both email and password", "error");
+    return;
+  }
+
+  btn.innerHTML = "⏳ Logging in...";
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/student-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("studentEmail", email);
+      localStorage.setItem("user", email);
+      localStorage.setItem("studentName", data.name || email.split('@')[0]);
+      localStorage.setItem("role", "student");
+      
+      showMessage("Login successful! Redirecting...", "success");
+      
+      setTimeout(() => {
+        window.location.href = "student_dashboard/student_dashboard.html";
+      }, 1000);
+    } else {
+      showMessage(data.message || "Invalid credentials", "error");
+      btn.innerHTML = "Login →";
+      btn.disabled = false;
+    }
+
+  } catch (err) {
+    showMessage("Server error. Please check if backend is running", "error");
+    btn.innerHTML = "Login →";
+    btn.disabled = false;
+  }
+}
+
+function showMessage(msg, type) {
+  const messageBox = document.getElementById("messageBox");
+  messageBox.textContent = msg;
+  messageBox.className = `message ${type}`;
+  messageBox.style.display = "block";
+}
+
+// 👁️ Toggle Password
+function togglePassword() {
+  const password = document.getElementById("password");
+  const icon = document.getElementById("eyeIcon");
+
+  if (password.type === "password") {
+    password.type = "text";
+    icon.classList.remove("fa-eye");
+    icon.classList.add("fa-eye-slash");
+  } else {
+    password.type = "password";
+    icon.classList.remove("fa-eye-slash");
+    icon.classList.add("fa-eye");
+  }
+}
+</script>
+
+</body>
+</html>

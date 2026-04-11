@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("../config/db");
 
-// ✅ THIS IS IMPORTANT
+
 router.get("/resources", (req, res) => {
   const query = "SELECT * FROM resources ORDER BY created_at DESC";
 
@@ -16,7 +16,7 @@ router.get("/resources", (req, res) => {
 });
 
 
-// ✅ Get questions
+// Get questions
 router.get("/questions/:topic", (req, res) => {
   const topic = req.params.topic;
 
@@ -28,7 +28,7 @@ router.get("/questions/:topic", (req, res) => {
   });
 });
 
-// ✅ Get results (for analysis)
+//  Get results 
 router.get("/results/:user", (req, res) => {
   const sql = "SELECT * FROM results WHERE user=? ORDER BY id";
 

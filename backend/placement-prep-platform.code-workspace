@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../../../placement-prep-platform"
+		},
+		{
+			"path": ".."
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "place"
+	}
+}

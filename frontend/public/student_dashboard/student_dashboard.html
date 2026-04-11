@@ -4,52 +4,255 @@
   <meta charset="UTF-8">
   <title>Placement Prep Platform</title>
 
-  <link rel="stylesheet" href="student_dashboard.css">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
   <style>
-    #resourcesSection {
-      padding: 20px;
-      margin-top: 30px;
-      border-top: 1px solid #ccc;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f7ff;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0b1d51;
+      padding: 18px 60px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 800;
+      color: white;
+    }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      gap: 25px;
+      align-items: center;
+    }
+
+    .nav-links li a {
+      text-decoration: none;
+      color: white;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .nav-links li a:hover {
+      color: #28a745;
+    }
+
+    .mode-btn {
+      background: transparent;
+      border: 2px solid white;
+      padding: 8px 15px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .logout-btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    /* Hero */
+    .hero {
+      text-align: center;
+      padding: 80px 20px 60px;
+      background: linear-gradient(135deg, #0b1d51 0%, #1a3a6e 100%);
+      color: white;
+    }
+
+    .hero h1 {
+      font-size: 52px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+
+    .btn {
+      padding: 14px 35px;
+      font-size: 16px;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .btn.green {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn.light {
+      background: white;
+      color: #0b1d51;
+    }
+
+    .welcome {
+      font-size: 18px;
+      font-weight: 600;
+      background: rgba(255,255,255,0.2);
+      display: inline-block;
+      padding: 10px 25px;
+      border-radius: 50px;
+    }
+
+    #username {
+      font-weight: 800;
+      color: #28a745;
+    }
+
+    /* Features */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+      padding: 60px;
+      background: #f0f7ff;
+    }
+
+    .feature {
+      background: white;
+      padding: 35px 25px;
+      border-radius: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+      border-bottom: 4px solid #28a745;
+    }
+
+    .feature:hover {
+      transform: translateY(-8px);
+    }
+
+    .feature i {
+      font-size: 48px;
+      color: #0b1d51;
+      margin-bottom: 20px;
+    }
+
+    .feature p {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a2e;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      background: #0b1d51;
+      color: white;
+    }
+
+    /* Dark Mode */
+    body.dark {
+      background: #121212;
+    }
+
+    body.dark .navbar {
+      background: #1a1a2e;
+    }
+
+    body.dark .hero {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    }
+
+    body.dark .features {
+      background: #121212;
+    }
+
+    body.dark .feature {
+      background: #1e1e2e;
+    }
+
+    body.dark .feature p {
+      color: #eee;
+    }
+
+    body.dark .feature i {
+      color: #28a745;
+    }
+
+    @media (max-width: 768px) {
+      .navbar {
+        padding: 15px 20px;
+        flex-direction: column;
+        gap: 15px;
+      }
+      .nav-links {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+      .hero h1 {
+        font-size: 32px;
+      }
+      .features {
+        padding: 30px 20px;
+      }
+      .buttons {
+        flex-direction: column;
+        align-items: center;
+      }
     }
   </style>
 </head>
 
 <body>
 
-<!-- Navbar -->
- <nav class="navbar">
-        <h2 class="logo">PlacementPrep</h2>
+<nav class="navbar">
+  <h2 class="logo">📚 PlacementPrep</h2>
+  <ul class="nav-links">
+    <li><a href="student_dashboard.html">Home</a></li>
+    <li><a href="practice.html">Practice</a></li>
+    <li><a href="mock_tests.html">Mock Tests</a></li>
+    <li><a href="interview.html">Interview Prep</a></li>
+    <li><a href="career.html">Career Guidance</a></li>
+    <li><button onclick="toggleMode()" class="mode-btn">🌙</button></li>
+    <li><button class="logout-btn" onclick="logout()">Logout</button></li>
+  </ul>
+</nav>
 
-        <ul class="nav-links">
-            <li><a href="student_dashboard.html">Home</a></li>
-            <li><a href="practice.html">Practice</a></li>
-            <li><a href="mock_tests.html">Mock Tests</a></li>
-            <li><a href="interview.html">Interview Prep</a></li>
-            <li><a href="career.html">Career Guidance</a></li>
-
-            <li><button onclick="toggleMode()" class="mode-btn">🌙</button></li>
-            <li><button class="logout-btn" onclick="logout()">Logout</button></li>
-        </ul>
-        </nav>
-
-<!-- Hero -->
 <section class="hero">
   <h1>Prepare Smart. Perform Better. Get Placed.</h1>
   <p>A complete placement preparation platform.</p>
-
   <div class="buttons">
     <button class="btn green" onclick="window.location.href='practice.html'">Start Practicing</button>
     <button class="btn light" onclick="window.location.href='mock_tests.html'">Take a Mock Test</button>
   </div>
-
   <p class="welcome">Welcome, <span id="username">User</span> 👋</p>
 </section>
 
-<!-- Features -->
 <section class="features">
-  <div class="feature" onclick="window.location.href='analysis.html'">
+  <div class="feature" onclick="goToAnalysis()">
     <i class="bi bi-bar-chart"></i>
     <p>Performance Analysis</p>
   </div>
@@ -59,22 +262,20 @@
     <p>Real Exam Environment</p>
   </div>
 
-  <div class="feature" onclick="window.location.href='practice.html'"">
+  <div class="feature" onclick="window.location.href='practice.html'">
     <i class="bi bi-journal-text"></i>
     <p>Structured Practice</p>
   </div>
 
-  <!-- ✅ Removed onclick -->
   <div class="feature" onclick="window.location.href='videos.html'">
     <i class="bi bi-camera-video"></i>
     <p>Video Explanations</p>
   </div>
 
-
   <div class="feature" onclick="window.location.href='pdfs.html'">
-  <i class="bi bi-file-earmark-text"></i>
-  <p>PDF Resources</p>
-</div>
+    <i class="bi bi-file-earmark-text"></i>
+    <p>PDF Resources</p>
+  </div>
 
   <div class="feature" onclick="window.location.href='revision.html'">
     <i class="bi bi-file-earmark-text"></i>
@@ -82,32 +283,50 @@
   </div>
 </section>
 
-
-<!-- Footer -->
 <footer>
   <p>© 2026 Placement Prep Platform</p>
 </footer>
 
-<!-- JS -->
 <script>
 document.addEventListener("DOMContentLoaded", () => {
+  // Get student info from localStorage (set during student_login)
+  const studentEmail = localStorage.getItem("studentEmail") || localStorage.getItem("user");
+  const studentName = localStorage.getItem("studentName");
+  const token = localStorage.getItem("token");
 
-  // Username
-  const user = localStorage.getItem("user");
-  if (user) {
-    document.getElementById("username").innerText = user;
+  // Check if student is logged in
+  if (!studentEmail || !token) {
+    // Redirect to login page if not logged in
+    window.location.href = "../student_login.html";
+    return;
   }
 
-  // Logout
+  // Display student name
+  const usernameSpan = document.getElementById("username");
+  if (usernameSpan) {
+    usernameSpan.innerText = studentName || studentEmail.split('@')[0];
+  }
+
+  // Logout function
   window.logout = function () {
     localStorage.clear();
-    window.location.href = "../index.html";
+    window.location.href = "../student_login.html";
+  };
+
+  // Function to go to analysis page
+  window.goToAnalysis = function() {
+    const studentEmail = localStorage.getItem("studentEmail") || localStorage.getItem("user");
+    if (studentEmail) {
+      localStorage.setItem("analysisStudent", studentEmail);
+      window.location.href = "analysis.html";
+    } else {
+      alert("Please login to view your analysis");
+    }
   };
 
   // Dark mode
   window.toggleMode = function () {
     document.body.classList.toggle("dark");
-
     const btn = document.querySelector(".mode-btn");
     if (document.body.classList.contains("dark")) {
       btn.innerText = "☀️";
@@ -124,53 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("dark");
     document.querySelector(".mode-btn").innerText = "☀️";
   }
-
-  // Load resources
-  async function loadResources() {
-    try {
-      const res = await fetch("http://localhost:5000/api/user/resources");
-      const data = await res.json();
-
-      const container = document.getElementById("resourceContainer");
-      container.innerHTML = "";
-
-      if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = "<p>No resources available</p>";
-        return;
-      }
-
-      data.forEach(item => {
-        if (item.type === "video") {
-          container.innerHTML += `
-            <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
-              <h4>${item.title}</h4>
-              <p><b>Topic:</b> ${item.topic}</p>
-              <video width="300" controls>
-                <source src="http://localhost:5000${item.file_path}">
-              </video>
-            </div>
-          `;
-        } else {
-          container.innerHTML += `
-            <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
-              <h4>${item.title}</h4>
-              <p><b>Topic:</b> ${item.topic}</p>
-              <a href="http://localhost:5000${item.file_path}" target="_blank">
-                📄 View PDF
-              </a>
-            </div>
-          `;
-        }
-      });
-
-    } catch (err) {
-      console.error(err);
-      document.getElementById("resourceContainer").innerHTML = "Error loading resources";
-    }
-  }
-
-  loadResources();
-
 });
 </script>
 

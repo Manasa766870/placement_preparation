@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login</title>
+  <!-- Add Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url("https://images.unsplash.com/photo-1522202176988-66273c2fd55f") no-repeat center center/cover;   
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-card {
+      background: white;
+      padding: 40px 35px;
+      border-radius: 20px;
+      width: 380px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+      text-align: center;
+      transition: transform 0.3s;
+    }
+
+    .login-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .login-card h2 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 28px;
+    }
+
+    .login-card p {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+      text-align: left;
+      position: relative;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+      font-weight: 500;
+      font-size: 14px;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 12px 40px 12px 15px;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      font-size: 14px;
+      transition: all 0.3s;
+      outline: none;
+    }
+
+    .input-group input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102,126,234,0.1);
+    }
+
+    .eye-icon {
+      position: absolute;
+      right: 15px;
+      bottom: 12px;
+      cursor: pointer;
+      color: #888;
+      font-size: 18px;
+    }
+
+    .eye-icon:hover {
+      color: #667eea;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102,126,234,0.4);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    .message {
+      margin-top: 20px;
+      font-size: 13px;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .message.error {
+      background: #fee;
+      color: #c33;
+      display: block;
+    }
+
+    .message.success {
+      background: #efe;
+      color: #3a3;
+      display: block;
+    }
+
+    .loading {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+
+<div class="login-card">
+  <h2>🔐 Admin Login</h2>
+  <p>Access the admin dashboard</p>
+
+  <div class="input-group">
+    <label>📧 Email Address</label>
+    <input type="email" id="email" placeholder="admin@example.com">
+  </div>
+
+  <div class="input-group">
+    <label>🔒 Password</label>
+    <input type="password" id="password" placeholder="Enter your password">
+    <i class="eye-icon fas fa-eye" onclick="togglePassword()"></i>
+  </div>
+
+  <button onclick="login()">Login →</button>
+  <div id="messageBox" class="message"></div>
+</div>
+
+<script>
+async function login() {
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+  const messageBox = document.getElementById("messageBox");
+  const btn = document.querySelector("button");
+
+  messageBox.className = "message";
+  messageBox.style.display = "none";
+
+  if (!email || !password) {
+    showMessage("Please enter both email and password", "error");
+    return;
+  }
+
+  if (!email.includes("@")) {
+    showMessage("Please enter a valid email address", "error");
+    return;
+  }
+
+  btn.innerHTML = "⏳ Logging in...";
+  btn.classList.add("loading");
+  btn.disabled = true;
+
+  try {
+    const res = await fetch("http://localhost:5000/api/auth/admin-login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password })
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      showMessage(data.message || "Login successful! Redirecting...", "success");
+      localStorage.setItem("role", "admin");
+      localStorage.setItem("adminEmail", email);
+      
+      setTimeout(() => {
+        window.location.href = "admin_dashboard/admin_dashboard.html";
+      }, 1000);
+    } else {
+      showMessage(data.message || "Invalid credentials", "error");
+      btn.innerHTML = "Login →";
+      btn.classList.remove("loading");
+      btn.disabled = false;
+    }
+
+  } catch (err) {
+    showMessage("Server error. Please check if backend is running", "error");
+    btn.innerHTML = "Login →";
+    btn.classList.remove("loading");
+    btn.disabled = false;
+  }
+}
+
+function showMessage(msg, type) {
+  const messageBox = document.getElementById("messageBox");
+  messageBox.textContent = msg;
+  messageBox.className = `message ${type}`;
+  messageBox.style.display = "block";
+}
+
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  const eyeIcon = document.querySelector(".eye-icon");
+  
+  if (passwordInput.type === "password") {
+    passwordInput.type = "text";
+    eyeIcon.classList.remove("fa-eye");
+    eyeIcon.classList.add("fa-eye-slash");
+  } else {
+    passwordInput.type = "password";
+    eyeIcon.classList.remove("fa-eye-slash");
+    eyeIcon.classList.add("fa-eye");
+  }
+}
+</script>
+
+</body>
+</html>

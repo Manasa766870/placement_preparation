@@ -7,13 +7,13 @@
     </head>
     <style>
 body {
-  background-color: #f5f7fb;
+  background-color: #49e4cf;
   font-family: 'Segoe UI', sans-serif;
   margin: 0;
 }
 
 /* Title */
-h2 {
+h1 {
   margin: 0;
   background: #1e293b;
   color: white;
@@ -30,7 +30,7 @@ h2 {
 
 /* PDF card */
 .pdf-card {
-  background: white;
+  background: rgb(253, 253, 253);
   border-radius: 12px;
   padding: 15px;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -40,6 +40,7 @@ h2 {
 /* Hover effect */
 .pdf-card:hover {
   transform: translateY(-5px);
+  color: #1e293b;
 }
 
 /* Title */
@@ -67,11 +68,11 @@ h2 {
 }
 
 .pdf-link:hover {
-  background: #bb2d3b;
+  background: #2dbb58;
 }
 </style>
     <body>
-        <h2 style="padding:20px;">PDF Resources</h2>
+        <h1 style="text-align:center;font-size:50px;">📚PDF Resources</h1>
         <div id="pdfContainer" style="padding:20px;"></div>
     </body>
     <script>
@@ -85,14 +86,14 @@ async function loadPDFs() {
   data.forEach(item => {
     if(item.type === "pdf"){
       container.innerHTML += `
-        <div style="margin-bottom:20px; border:1px solid #ccc; padding:10px; border-radius:10px;">
-          <h4>${item.title}</h4>
-          <p><b>Topic:</b> ${item.topic}</p>
-          <a href="http://localhost:5000${item.file_path}" target="_blank">
-            📄 View PDF
-          </a>
-        </div>
-      `;
+  <div class="pdf-card">
+    <h4>${item.title}</h4>
+    <p><b>Topic:</b> ${item.topic}</p>
+    <a class="pdf-link" href="http://localhost:5000${item.file_path}" target="_blank">
+      📄 View PDF
+    </a>
+  </div>
+`;
     }
   });
 }

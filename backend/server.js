@@ -7,11 +7,14 @@ const app = express();
 // 🔗 Import DB
 const db = require("./config/db");
 
+
 // 🔗 Import Routes
 const authRoutes = require("./routes/authRoutes");
 const adminRoutes = require("./routes/adminRoutes");
 const userRoutes = require("./routes/userRoutes");
 
+
+console.log("Auth Routes Loaded:", typeof authRoutes);
 // ✅ Middleware
 app.use(cors());
 app.use(express.json());
@@ -28,7 +31,10 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);     // login/register
 app.use("/api/admin", adminRoutes);   // admin actions
 app.use("/api/user", userRoutes);     // user actions
-
+app.post("/test", (req, res) => {
+  console.log("TEST ROUTE HIT");
+  res.json({ message: "Test route working" });
+});
 // ❌ 404 handler
 app.use((req, res) => {
   res.status(404).json({ message: "Route not found" });

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -88,7 +88,7 @@ let currentIndex = 0;
 let score = 0;
 let selected = null;
 
-// ✅ Load questions from backend
+//  Load questions from backend
 async function loadQuestions() {
   const topic = localStorage.getItem("testTopic");
   console.log("Topic:", topic); // 👈 DEBUG
@@ -114,7 +114,7 @@ async function loadQuestions() {
   }
 }
 
-// ✅ Show question
+//  Show question
 function showQuestion() {
   selected = null;
 
@@ -133,7 +133,7 @@ function showQuestion() {
   document.getElementById("options").innerHTML = optionsHTML;
 }
 
-// ✅ Next question
+//  Next question
 function nextQuestion() {
   const selectedOption = document.querySelector('input[name="opt"]:checked');
 
@@ -157,7 +157,7 @@ function nextQuestion() {
   }
 }
 
-// ✅ Finish test
+//  Finish test
 async function finishTest() {
   document.getElementById("quizBox").style.display = "none";
   document.getElementById("resultBox").style.display = "block";
@@ -168,7 +168,7 @@ async function finishTest() {
   document.getElementById("resultText").innerText =
     `You scored ${score} / ${total} (${percent}%)`;
 
-  // ✅ Save result to backend
+  // Save result to backend
   try {
     await fetch("http://localhost:5000/api/user/save-result", {
       method: "POST",
@@ -187,12 +187,260 @@ async function finishTest() {
   }
 }
 
-// ✅ Go back
+//  Go back
 function goHome() {
   window.location.href = "student_dashboard.html";
 }
 
 // Load on start
+loadQuestions();
+</script>
+
+</body>
+</html> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Mock Test</title>
+
+<style>
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(135deg, #0b1d51 0%, #1a3a6e 100%);
+  margin: 0;
+}
+
+.container {
+  max-width: 700px;
+  margin: 50px auto;
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.question {
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.options label {
+  display: block;
+  margin: 8px 0;
+  padding: 10px;
+  border-radius: 6px;
+  background: #f1f1f1;
+  cursor: pointer;
+}
+
+.options input {
+  margin-right: 10px;
+}
+
+.btn {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #0d6efd;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #0b5ed7;
+}
+
+.result {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.review-box {
+  margin-top: 20px;
+}
+.review-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h2>Mock Test</h2>
+
+  <div id="quizBox">
+    <div class="question" id="question">Loading...</div>
+    <div class="options" id="options"></div>
+    <button class="btn" onclick="nextQuestion()">Next</button>
+  </div>
+
+  <div id="resultBox" style="display:none;">
+    <p class="result" id="resultText"></p>
+    <div id="wrongAnswersBox" class="review-box"></div>
+    <button class="btn" onclick="goHome()">Go Home</button>
+  </div>
+</div>
+
+<script>
+let questions = [];
+let currentIndex = 0;
+let score = 0;
+let wrongAnswers = []; // ✅ store wrong answers
+
+// Load questions
+async function loadQuestions() {
+  const topic = localStorage.getItem("testTopic");
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/user/questions/${topic}`);
+    const data = await res.json();
+
+    questions = data;
+
+    if (!questions.length) {
+      document.getElementById("question").innerText = "No questions available";
+      return;
+    }
+
+    showQuestion();
+
+  } catch (err) {
+    console.error(err);
+    document.getElementById("question").innerText = "Error loading questions";
+  }
+}
+
+// Show question
+function showQuestion() {
+  const q = questions[currentIndex];
+
+  document.getElementById("question").innerText =
+    `Q${currentIndex + 1}. ${q.question}`;
+
+  document.getElementById("options").innerHTML = `
+    <label><input type="radio" name="opt" value="1"> ${q.option1}</label>
+    <label><input type="radio" name="opt" value="2"> ${q.option2}</label>
+    <label><input type="radio" name="opt" value="3"> ${q.option3}</label>
+    <label><input type="radio" name="opt" value="4"> ${q.option4}</label>
+  `;
+}
+
+// Next question
+function nextQuestion() {
+  const selectedOption = document.querySelector('input[name="opt"]:checked');
+
+  if (!selectedOption) {
+    alert("Please select an option");
+    return;
+  }
+
+  const answer = selectedOption.value;
+  const q = questions[currentIndex];
+
+  if (answer == q.correct_option) {
+    score++;
+  } else {
+    // ✅ store wrong answer
+    wrongAnswers.push({
+      question: q.question,
+      selected: answer,
+      correct: q.correct_option,
+      options: [q.option1, q.option2, q.option3, q.option4]
+    });
+  }
+
+  currentIndex++;
+
+  if (currentIndex < questions.length) {
+    showQuestion();
+  } else {
+    finishTest();
+  }
+}
+
+// Finish test
+async function finishTest() {
+  document.getElementById("quizBox").style.display = "none";
+  document.getElementById("resultBox").style.display = "block";
+
+  const total = questions.length;
+  const percent = Math.round((score / total) * 100);
+
+  document.getElementById("resultText").innerText =
+    `You scored ${score} / ${total} (${percent}%)`;
+
+  // ✅ Show wrong answers
+  const wrongBox = document.getElementById("wrongAnswersBox");
+
+  if (wrongAnswers.length > 0) {
+    let html = "<h3>Review Wrong Answers:</h3>";
+
+    wrongAnswers.forEach((item, index) => {
+      html += `
+        <div class="review-card">
+          <p><b>Q${index + 1}:</b> ${item.question}</p>
+          <p style="color:red;">Your Answer: ${item.options[item.selected - 1]}</p>
+          <p style="color:green;">Correct Answer: ${item.options[item.correct - 1]}</p>
+        </div>
+      `;
+    });
+
+    wrongBox.innerHTML = html;
+  } else {
+    wrongBox.innerHTML = "<p>🎉 All answers correct!</p>";
+  }
+
+  // Save result
+  try {
+    await fetch("http://localhost:5000/api/user/save-result", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: localStorage.getItem("user"),
+        score,
+        total,
+        topic: localStorage.getItem("testTopic")
+      })
+    });
+  } catch (err) {
+    console.error("Error saving result", err);
+  }
+}
+
+// Go back
+function goHome() {
+  window.location.href = "student_dashboard.html";
+}
+
+// Start
 loadQuestions();
 </script>
 

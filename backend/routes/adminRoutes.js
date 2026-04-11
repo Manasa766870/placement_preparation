@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 /* =========================================
-   ✅ Upload VIDEO (store in resources)
+   Upload VIDEO (store in resources)
 ========================================= */
 router.post("/upload-video", upload.single("video"), (req, res) => {
   const { title, topic } = req.body;
@@ -36,7 +36,7 @@ router.post("/upload-video", upload.single("video"), (req, res) => {
 });
 
 /* =========================================
-   ✅ Upload PDF
+    Upload PDF
 ========================================= */
 router.post("/upload-pdf", upload.single("pdf"), (req, res) => {
   const { title, topic } = req.body;
@@ -55,7 +55,7 @@ router.post("/upload-pdf", upload.single("pdf"), (req, res) => {
 });
 
 /* =========================================
-   ✅ Get ALL resources (for students)
+    Get ALL resources (for students)
 ========================================= */
 router.get("/resources", (req, res) => {
   const query = "SELECT * FROM resources ORDER BY id DESC";
